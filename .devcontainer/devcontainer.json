@@ -1,0 +1,9 @@
+{
+  "name": "Node.js & MySQL Dev Container",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "forwardPorts": [3306],
+  "postCreateCommand": "sudo service mysql start",
+  "remoteUser": "vscode"
+}
