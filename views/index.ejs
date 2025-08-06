@@ -3,6 +3,103 @@
 <head>
   <title><%= title %></title> 
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+  <style>
+    body {
+      background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364); /* ダークなグラデ背景 */
+      color: #e0e0e0;
+      font-family: 'Orbitron', sans-serif;
+      min-height: 100vh;
+      padding-top: 20px;
+    } 
+
+    .container {
+      background: rgba(255, 255, 255, 0.05); /* 半透明ガラス風 */
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 0 20px rgba(0,255,255,0.2);
+      margin-top: 30px;
+    }
+
+    form {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(0, 255, 255, 0.3);
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0,255,255,0.2);
+    }
+
+    form input[type="text"],
+    form input[type="date"] {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      border: none;
+      padding: 10px;
+      margin: 5px;
+      border-radius: 5px;
+      width: 90%;
+    }
+
+    form input[type="submit"] {
+      background-color: #00ffff;
+      color: #000;
+      border: none;
+      padding: 10px 20px;
+      margin-top: 10px;
+      border-radius: 5px;
+      font-weight: bold;
+      box-shadow: 0 0 5px #00ffff, 0 0 15px #00ffff;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    form input[type="submit"]:hover {
+      background-color: #00dddd;
+      box-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+    }
+
+    #calendar {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,255,255,0.2);
+    }
+
+    #task-list {
+      margin-top: 20px;
+      background-color: rgba(255, 255, 255, 0.08);
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,255,255,0.1);
+    }
+
+    .fc-theme-standard td,
+    .fc-theme-standard th {
+      border: 1px solid rgba(0, 255, 255, 0.2);
+    }
+
+    .fc {
+      color: #fff;
+    }
+
+    h1, h5, label {
+      color: #00ffff;
+      text-shadow: 0 0 5px #00ffff;
+    }
+
+    a.btn-primary {
+      background-color: #00ffff;
+      border-color: #00cccc;
+      color: #000;
+      font-weight: bold;
+      box-shadow: 0 0 10px #00ffff;
+    }
+
+    a.btn-primary:hover {
+      background-color: #00cccc;
+      box-shadow: 0 0 15px #00ffff;
+    }
+  </style>
 </head>
 <body>
 <%- include('./error_messages'); %>
@@ -12,17 +109,15 @@
   <div class="row">
     <div class="col-md-6">
       <form action="/" method="post">
-        <label>タスクの追加</label>
-        <input required type="text" name="add" placeholder="何をする?"/>
-        <input type="submit" value="追加"/>
+        <label>やることリスト</label>
+          <input required type="text" name="add" placeholder="何をする?" />
+          <input required type="date" name="task_date" />
+          <input type="submit" value="追加"/>
       </form>
     </div>
     <div class="col-md-6">
-      <ul>
-        <% for(let todo of todos){ %>
-          <li><span><%= todo.content %></span></li>
-        <% } %>
-      </ul>
+       <div id="calendar"></div>
+       <div id="task-list"></div>
     </div>
   </div>
 </div>
@@ -39,5 +134,31 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
         integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
         crossorigin="anonymous"></script>
+<!-- カレンダー用スクリプト（FullCalendar CDN利用） -->
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // タスクデータをFullCalendar用イベントに変換
+    const todos = <%- JSON.stringify(todos) %>;
+    const events = todos.map(todo => ({
+      title: todo.content,
+      start: todo.task_date
+    }));
+
+    const calendarEl = document.getElementById('calendar');
+    const taskListEl = document.getElementById('task-list');
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'dayGridMonth',
+      events: events,
+      dateClick: function(info) {
+        // 選択した日付のタスクを表示
+        const selected = todos.filter(t => t.task_date === info.dateStr);
+        taskListEl.innerHTML = `<h5>${info.dateStr}のやること</h5>` +
+          (selected.length ? '<ul>' + selected.map(t => `<li>${t.content}</li>`).join('') + '</ul>' : 'やることはありません');
+           }
+    });
+    calendar.render();
+  });
+</script>
 </body>
 </html>
