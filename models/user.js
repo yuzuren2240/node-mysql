@@ -1,4 +1,4 @@
-const knex = require("../db/knex");
+/*const knex = require("../db/knex");
 
 const TABLE_NAME = "users";
 
@@ -23,4 +23,4 @@ async function where(condition) {
 
 module.exports = {
   findById,
-};
+};*/
