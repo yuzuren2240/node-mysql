@@ -3,102 +3,134 @@
 <head>
   <title><%= title %></title> 
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet" />
   <style>
-    body {
-      background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364); /* ダークなグラデ背景 */
-      color: #e0e0e0;
-      font-family: 'Orbitron', sans-serif;
-      min-height: 100vh;
-      padding-top: 20px;
-    } 
+   body {
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364, #1f1f2e);
+  color: #00fff7;
+  font-family: 'Orbitron', sans-serif;
+  min-height: 100vh;
+  padding-top: 30px;
+  letter-spacing: 0.03em;
+  text-shadow: 0 0 10px #00fff7, 0 0 20px #00fff7;
+}
 
-    .container {
-      background: rgba(255, 255, 255, 0.05); /* 半透明ガラス風 */
-      backdrop-filter: blur(10px);
-      border-radius: 15px;
-      padding: 30px;
-      box-shadow: 0 0 20px rgba(0,255,255,0.2);
-      margin-top: 30px;
-    }
+.container {
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid #00fff7;
+  box-shadow:
+    0 0 10px #00fff7,
+    0 0 20px #00fff7,
+    inset 0 0 10px #00fff7;
+  border-radius: 20px;
+  padding: 40px;
+  margin-top: 40px;
+}
 
-    form {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(0, 255, 255, 0.3);
-      border-radius: 10px;
-      padding: 20px;
-      box-shadow: 0 0 10px rgba(0,255,255,0.2);
-    }
+form {
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid #00fff7;
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow:
+    0 0 15px #00fff7,
+    inset 0 0 20px #00fff7;
+}
 
-    form input[type="text"],
-    form input[type="date"] {
-      background-color: rgba(255, 255, 255, 0.1);
-      color: #fff;
-      border: none;
-      padding: 10px;
-      margin: 5px;
-      border-radius: 5px;
-      width: 90%;
-    }
+form input[type="text"],
+form input[type="date"] {
+  background: #111;
+  border: 1px solid #00fff7;
+  color: #00fff7;
+  padding: 12px;
+  margin: 8px 0;
+  border-radius: 8px;
+  width: 100%;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 5px #00fff7 inset;
+}
 
-    form input[type="submit"] {
-      background-color: #00ffff;
-      color: #000;
-      border: none;
-      padding: 10px 20px;
-      margin-top: 10px;
-      border-radius: 5px;
-      font-weight: bold;
-      box-shadow: 0 0 5px #00ffff, 0 0 15px #00ffff;
-      cursor: pointer;
-      transition: 0.3s;
-    }
+form input[type="text"]:focus,
+form input[type="date"]:focus {
+  border-color: #00ffff;
+  box-shadow: 0 0 15px #00ffff;
+  outline: none;
+}
 
-    form input[type="submit"]:hover {
-      background-color: #00dddd;
-      box-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
-    }
+form input[type="submit"] {
+  background-color: #00ffff;
+  color: #000;
+  border: none;
+  padding: 12px 25px;
+  margin-top: 15px;
+  border-radius: 12px;
+  font-weight: 700;
+  box-shadow:
+    0 0 8px #00ffff,
+    0 0 20px #00ffff;
+  cursor: pointer;
+  transition: 0.4s ease;
+  text-transform: uppercase;
+}
 
-    #calendar {
-      background-color: rgba(255, 255, 255, 0.1);
-      padding: 15px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,255,255,0.2);
-    }
+form input[type="submit"]:hover {
+  background-color: #00e5e5;
+  box-shadow:
+    0 0 20px #00ffff,
+    0 0 30px #00ffff,
+    0 0 40px #00ffff;
+}
 
-    #task-list {
-      margin-top: 20px;
-      background-color: rgba(255, 255, 255, 0.08);
-      padding: 15px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,255,255,0.1);
-    }
+#calendar {
+  background-color: #111;
+  border: 2px solid #00fff7;
+  box-shadow: 0 0 25px #00fff7;
+  border-radius: 15px;
+  padding: 20px;
+  color: #00fff7;
+  font-weight: 600;
+  font-family: 'Orbitron', sans-serif;
+}
 
-    .fc-theme-standard td,
-    .fc-theme-standard th {
-      border: 1px solid rgba(0, 255, 255, 0.2);
-    }
+#task-list {
+  margin-top: 25px;
+  background-color: #111;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 0 15px #00fff7;
+  color: #00fff7;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 600;
+}
 
-    .fc {
-      color: #fff;
-    }
+.fc-theme-standard td,
+.fc-theme-standard th {
+  border: 1px solid #00fff7 !important;
+  color: #00fff7 !important;
+}
 
-    h1, h5, label {
-      color: #00ffff;
-      text-shadow: 0 0 5px #00ffff;
-    }
+.fc {
+  color: #00fff7 !important;
+}
 
-    a.btn-primary {
-      background-color: #00ffff;
-      border-color: #00cccc;
-      color: #000;
-      font-weight: bold;
-      box-shadow: 0 0 10px #00ffff;
-    }
+h1, h5, label {
+  color: #00ffff;
+  text-shadow: 0 0 10px #00ffff;
+}
 
-    a.btn-primary:hover {
-      background-color: #00cccc;
-      box-shadow: 0 0 15px #00ffff;
-    }
+a.btn-primary {
+  background-color: #00ffff;
+  border-color: #00cccc;
+  color: #000;
+  font-weight: bold;
+  box-shadow: 0 0 15px #00ffff;
+  transition: 0.3s;
+}
+
+a.btn-primary:hover {
+  background-color: #00cccc;
+  box-shadow: 0 0 25px #00ffff;
+}
   </style>
 </head>
 <body>
