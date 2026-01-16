@@ -1,19 +1,196 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <form action="/" method="post">
-      <label>タスクの追加</label>
-      <input required type="text" name="add" placeholder="何をする?"/>
-      <input type="submit" value="追加"/>
-    </form>
-    <ul>
-    <% for(let todo of todos){ %>
-      <li><span><%= todo.content %></span></li>
-    <% } %>
-  </ul>
-  </body>
+<head>
+  <title><%= title %></title> 
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+   body {
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364, #1f1f2e);
+  color: #00fff7;
+  font-family: 'Orbitron', sans-serif;
+  min-height: 100vh;
+  padding-top: 30px;
+  letter-spacing: 0.03em;
+  text-shadow: 0 0 10px #00fff7, 0 0 20px #00fff7;
+}
+
+.container {
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid #00fff7;
+  box-shadow:
+    0 0 10px #00fff7,
+    0 0 20px #00fff7,
+    inset 0 0 10px #00fff7;
+  border-radius: 20px;
+  padding: 40px;
+  margin-top: 40px;
+}
+
+form {
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid #00fff7;
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow:
+    0 0 15px #00fff7,
+    inset 0 0 20px #00fff7;
+}
+
+form input[type="text"],
+form input[type="date"] {
+  background: #111;
+  border: 1px solid #00fff7;
+  color: #00fff7;
+  padding: 12px;
+  margin: 8px 0;
+  border-radius: 8px;
+  width: 100%;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 5px #00fff7 inset;
+}
+
+form input[type="text"]:focus,
+form input[type="date"]:focus {
+  border-color: #00ffff;
+  box-shadow: 0 0 15px #00ffff;
+  outline: none;
+}
+
+form input[type="submit"] {
+  background-color: #00ffff;
+  color: #000;
+  border: none;
+  padding: 12px 25px;
+  margin-top: 15px;
+  border-radius: 12px;
+  font-weight: 700;
+  box-shadow:
+    0 0 8px #00ffff,
+    0 0 20px #00ffff;
+  cursor: pointer;
+  transition: 0.4s ease;
+  text-transform: uppercase;
+}
+
+form input[type="submit"]:hover {
+  background-color: #00e5e5;
+  box-shadow:
+    0 0 20px #00ffff,
+    0 0 30px #00ffff,
+    0 0 40px #00ffff;
+}
+
+#calendar {
+  background-color: #111;
+  border: 2px solid #00fff7;
+  box-shadow: 0 0 25px #00fff7;
+  border-radius: 15px;
+  padding: 20px;
+  color: #00fff7;
+  font-weight: 600;
+  font-family: 'Orbitron', sans-serif;
+}
+
+#task-list {
+  margin-top: 25px;
+  background-color: #111;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 0 15px #00fff7;
+  color: #00fff7;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 600;
+}
+
+.fc-theme-standard td,
+.fc-theme-standard th {
+  border: 1px solid #00fff7 !important;
+  color: #00fff7 !important;
+}
+
+.fc {
+  color: #00fff7 !important;
+}
+
+h1, h5, label {
+  color: #00ffff;
+  text-shadow: 0 0 10px #00ffff;
+}
+
+a.btn-primary {
+  background-color: #00ffff;
+  border-color: #00cccc;
+  color: #000;
+  font-weight: bold;
+  box-shadow: 0 0 15px #00ffff;
+  transition: 0.3s;
+}
+
+a.btn-primary:hover {
+  background-color: #00cccc;
+  box-shadow: 0 0 25px #00ffff;
+}
+  </style>
+</head>
+<body>
+<%- include('./error_messages'); %>
+<%- include('./header'); %>
+<% if(isAuth) { %>
+ <div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <form action="/" method="post">
+        <label>やることリスト</label>
+          <input required type="text" name="add" placeholder="例：勉強" />
+          <input required type="date" name="task_date" />
+          <input type="submit" value="追加"/>
+      </form>
+    </div>
+    <div class="col-md-6">
+       <div id="calendar"></div>
+       <div id="task-list"></div>
+    </div>
+  </div>
+</div>
+<% } else { %>
+  <h1>Welcome to the TodoApp</h1>
+  <a class="btn btn-primary" href="/signup" role="button">Sign up now!</a>
+<% } %>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+        integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+        crossorigin="anonymous"></script>
+<!-- カレンダー用スクリプト（FullCalendar CDN利用） -->
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // タスクデータをFullCalendar用イベントに変換
+    const todos = <%- JSON.stringify(todos) %>;
+    const events = todos.map(todo => ({
+      title: todo.content,
+      start: todo.task_date
+    }));
+
+    const calendarEl = document.getElementById('calendar');
+    const taskListEl = document.getElementById('task-list');
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'dayGridMonth',
+      events: events,
+      dateClick: function(info) {
+        // 選択した日付のタスクを表示
+        const selected = todos.filter(t => t.task_date === info.dateStr);
+        taskListEl.innerHTML = `<h5>${info.dateStr}のやること</h5>` +
+          (selected.length ? '<ul>' + selected.map(t => `<li>${t.content}</li>`).join('') + '</ul>' : 'やることはありません');
+           }
+    });
+    calendar.render();
+  });
+</script>
+</body>
 </html>
